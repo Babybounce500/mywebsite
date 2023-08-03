@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aktienanalyse</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .red {
+            color: red;
+        }
+        
+        .green {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Aktienanalyse</h1><p>Kurspanne A = letztes High - Low / Kursspanne B = vorletztes High - Low / Kurs A = letzter Close / Kurs B drittletzter Close</p>
+    <form>
+        Aktiename: <input type="text" id="aktiename"><br>
+        Kursspanne A: <input type="number" id="kursspanneA" step="0.01"><br>
+        Kursspanne B: <input type="number" id="kursspanneB" step="0.01"><br>
+        Kurs A: <input type="number" id="kursA" step="0.01"><br>
+        Kurs B: <input type="number" id="kursB" step="0.01"><br>
+        <button type="button" onclick="analyse()">Analyse durchführen</button>
+    </form>
+    
+    <table id="ergebnisTabelle" style="display: none;">
+        <tr>
+            <th>Aktiename</th>
+            <th>Kursspanne A</th>
+            <th>Kursspanne B</th>
+            <th>Volatilität</th>
+            <th>Kurs A</th>
+            <th>Kurs B</th>
+            <th>Trend</th>
+        </tr>
+        <tr>
+            <td id="aktienameTd"></td>
+            <td id="kursspanneATd"></td>
+            <td id="kursspanneBTd"></td>
+            <td id="volatilitaetTd"></td>
+            <td id="kursATd"></td>
+            <td id="kursBTd"></td>
+            <td id="trendTd"></td>
+        </tr>
+    </table>
+    
+    <script>
+        function analyse() {
+            var aktiename = document.getElementById("aktiename").value;
+            var kursspanneA = parseFloat(document.getElementById("kursspanneA").value);
+            var kursspanneB = parseFloat(document.getElementById("kursspanneB").value);
+            var kursA = parseFloat(document.getElementById("kursA").value);
+            var kursB = parseFloat(document.getElementById("kursB").value);
+            
+            document.getElementById("aktienameTd").textContent = aktiename;
+            document.getElementById("kursspanneATd").textContent = kursspanneA.toFixed(2);
+            document.getElementById("kursspanneBTd").textContent = kursspanneB.toFixed(2);
+            document.getElementById("kursATd").textContent = kursA.toFixed(2);
+            document.getElementById("kursBTd").textContent = kursB.toFixed(2);
+            
+            var volatilitaetTd = document.getElementById("volatilitaetTd");
+            if (kursspanneA < kursspanneB) {
+                volatilitaetTd.textContent = "GO";
+                volatilitaetTd.classList.add("green");
+            } else if (kursspanneA > kursspanneB) {
+volatilitaetTd.textContent = "NO";
+volatilitaetTd.classList.add("red");
+} else {
+volatilitaetTd.textContent = "-";
+}        var trendTd = document.getElementById("trendTd");
+        var ergebnis = kursA - kursB;
+        if (ergebnis < 0) {
+            trendTd.textContent = "SHORT";
+            trendTd.classList.add("red");
+        } else if (ergebnis > 0) {
+            trendTd.textContent = "LONG";
+            trendTd.classList.add("green");
+        } else {
+            trendTd.textContent = "-";
+        }
+        
+        // Formular zurücksetzen
+        document.getElementById("aktiename").value = "";
+        document.getElementById("kursspanneA").value = "";
+        document.getElementById("kursspanneB").value = "";
+        document.getElementById("kursA").value = "";
+        document.getElementById("kursB").value = "";
+        
+        // Ergebnistabelle anzeigen
+        document.getElementById("ergebnisTabelle").style.display = "table";
+    }
+</script><br>
+
+<script>  function calculatePositionSize() {
+    // Werte aus den Eingabefeldern auslesen
+    var kontostand = parseFloat(document.getElementById("kontostand").value.replace(",", "."));
+    var kursrisiko = parseFloat(document.getElementById("kursrisiko").value.replace(",", "."));
+
+    // Positionsgröße (Stückzahl) berechnen
+    var prozentsatz = 1; // 1% des Kontostands
+    var stückzahl = (kontostand * prozentsatz / 100) / kursrisiko;
+
+    // Ergebnis anzeigen
+    document.getElementById("stückzahl").innerHTML = stückzahl;
+  }
+  </script>
+  </head>
+  <body>
+    <h1>Positionsgröße von Aktien</h1><p>Kursrisiko = Einstiegskurs - Stoppkurs</p>
+  
+    <label for="kontostand">Kontostand:</label>
+    <input type="text" id="kontostand"><br>
+  
+    <label for="kursrisiko">Kursrisiko:</label>
+    <input type="text" id="kursrisiko"><br>
+  
+    <button onclick="calculatePositionSize()">Berechnen</button>
+  
+    <p>Positionsgröße (Stückzahl): <span id="stückzahl"></span></p>
+  </body>
+  <!DOCTYPE html>
+  <html>
+  <head>
+      <title>Einstiegskurs Berechnung</title>
+      <style>
+          table {
+              border-collapse: collapse;
+          }
+          
+          th, td {
+              border: 1px solid black;
+              padding: 8px;
+              text-align: center;
+          }
+          
+          .long {
+              color: green;
+          }
+          
+          .short {
+              color: red;
+          }
+      </style>
+      <script>
+          function calculateEntry() {
+              var highKurs = parseFloat(document.getElementById("highKurs").value);
+              var lowKurs = parseFloat(document.getElementById("lowKurs").value);
+              
+              var longKurs, shortKurs;
+              
+              if (highKurs > lowKurs) {
+                  longKurs = highKurs;
+                  shortKurs = lowKurs;
+              } else {
+                  longKurs = lowKurs;
+                  shortKurs = highKurs;
+              }
+              
+              document.getElementById("longKurs").textContent = longKurs.toFixed(2);
+              document.getElementById("shortKurs").textContent = shortKurs.toFixed(2);
+          }
+      </script>
+  </head>
+  <body>
+      <h1>Einstiegskurs High Low letzte Kerze</h1>
+      
+      <table>
+          <tr>
+              <th>High</th>
+              <th>Low</th>
+              <th>Long</th>
+              <th>Short</th>
+          </tr>
+          <tr>
+              <td><input type="number" id="highKurs" step="0.01"></td>
+              <td><input type="number" id="lowKurs" step="0.01"></td>
+              <td id="longKurs"></td>
+              <td id="shortKurs"></td>
+          </tr>
+      </table>
+      
+      <button onclick="calculateEntry()">Einstiegskurs berechnen</button>
+
+  <head>
+    <title>Stopp-Bestimmung beim Aktienhandel</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function determineStops() {
+            var kerzentief = parseFloat(document.getElementById("kerzentief").value);
+            var kerzenhoch = parseFloat(document.getElementById("kerzenhoch").value);
+            
+            var longStop = kerzentief;
+            var shortStop = kerzenhoch;
+            
+            document.getElementById("longStop").textContent = longStop.toFixed(2);
+            document.getElementById("shortStop").textContent = shortStop.toFixed(2);
+        }
+    </script>
+</head>
+<body>
+    <h1>Stopp-Bestimmung beim Aktienhandel</h1>
+    
+    <label for="kerzentief">Letztes Kerzentief:</label>
+    <input type="number" id="kerzentief" step="0.01"><br>
+    
+    <label for="kerzenhoch">Letztes Kerzenhoch:</label>
+    <input type="number" id="kerzenhoch" step="0.01"><br>
+    
+    <button onclick="determineStops()">Stopps bestimmen</button>
+    
+    <table>
+        <tr>
+            <th>Position</th>
+            <th>Anfangsstopp</th>
+        </tr>
+        <tr>
+            <td>LONG</td>
+            <td id="longStop"></td>
+        </tr>
+        <tr>
+            <td>SHORT</td>
+            <td id="shortStop"></td>
+        </tr>
+    </table>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Gewinnmitnahme bei Aktien</title>
+      <script>
+        function calculateNewQuantity() {
+          // Werte aus den Eingabefeldern auslesen
+          var anfangsrisiko = parseFloat(document.getElementById("anfangsrisiko").value.replace(",", "."));
+          var aktuellerKurs = parseFloat(document.getElementById("aktuellerKurs").value.replace(",", "."));
+          var stopp = parseFloat(document.getElementById("stopp").value.replace(",", "."));
+    
+          // Neue Stückzahl berechnen
+          var neueStückzahl = anfangsrisiko / (aktuellerKurs - stopp);
+    
+          // Ergebnis anzeigen
+          document.getElementById("neueStückzahl").innerHTML = neueStückzahl.toFixed(2);
+        }
+      </script>
+    </head>
+    <body>
+      <h1>Gewinnmitnahme bei Aktien</h1>
+    
+      <label for="anfangsrisiko">Anfangsrisiko (in Euro):</label>
+      <input type="text" id="anfangsrisiko"><br>
+    
+      <label for="aktuellerKurs">Aktueller Kurs:</label>
+      <input type="text" id="aktuellerKurs"><br>
+    
+      <label for="stopp">Stopp:</label>
+      <input type="text" id="stopp"><br>
+    
+      <button onclick="calculateNewQuantity()">Berechnen</button>
+    
+      <p>Neue Stückzahl: <span id="neueStückzahl"></span></p>
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <title>De facto Trade</title>
+          <style>
+              table {
+                  border-collapse: collapse;
+              }
+              
+              th, td {
+                  border: 1px solid black;
+                  padding: 8px;
+                  text-align: center;
+              }
+          </style>
+      </head>
+      <body>
+          <h1>De facto Trade</h1>
+          
+          <table>
+              <tr>
+                  <th>Trend</th>
+                  <th>Einstiegskurs</th>
+                  <th>Stopp</th>
+                  <th>Stückzahl</th>
+                  <th>Dauer</th>
+              </tr>
+              <tr>
+                  <td>
+                      <select>
+                          <option value="long">Long</option>
+                          <option value="short">Short</option>
+                      </select>
+                  </td>
+                  <td><input type="number"></td>
+                  <td><input type="number"></td>
+                  <td><input type="number"></td>
+                  <td>
+                      <select>
+                          <option value="1 week">1 Woche</option>
+                          <option value="3 weeks">3 Wochen</option>
+                      </select>
+                  </td>
+              </tr>
+          </table>
+      </body>
+      

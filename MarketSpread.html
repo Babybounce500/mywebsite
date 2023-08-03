@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IntermarketSpread</title>
+  <script>
+    function analyseSpreads() {
+      // Get the input values
+      var indexA = parseFloat(document.getElementById('indexA').value);
+      var stockB = parseFloat(document.getElementById('stockB').value);
+      var indexC = parseFloat(document.getElementById('indexC').value);
+      var stockD = parseFloat(document.getElementById('stockD').value);
+
+      // Calculate the spreads
+      var spreadA = indexA / stockB;
+      var spreadB = indexC / stockD;
+
+      // Compare the spreads and display the result
+      var result = '';
+      if (spreadB < spreadA) {
+        result = 'Short Signal';
+      } else if (spreadB > spreadA) {
+        result = 'Long Signal';
+      } else {
+        result = 'No Signal';
+      }
+
+      // Display the result
+      document.getElementById('result').innerHTML = result;
+    }
+  </script>
+</head>
+<body>
+  <h1>IntermarketSpread</h1><h1>Aktiensignal</h1>
+  <form>
+    <label for="indexA">Kurs A des Index:</label>
+    <input type="number" id="indexA" step="0.01"><br>
+
+    <label for="stockB">Kurs B der Aktie:</label>
+    <input type="number" id="stockB" step="0.01"><br>
+
+    <label for="indexC">Kurs C des Index:</label>
+    <input type="number" id="indexC" step="0.01"><br>
+
+    <label for="stockD">Kurs D der Aktie:</label>
+    <input type="number" id="stockD" step="0.01"><br>
+
+    <button type="button" onclick="analyseSpreads()">Analysieren</button>
+  </form>
+
+  <h2>Ergebnis:</h2>
+  <p id="result"></p>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Erklärungs-Container</title>
+  <style>
+    .container {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Erklärungs</h1>
+  
+  <div class="container">
+    <p>Kurs A entspricht dem letzten Close des Index. <br>Kurs B entspricht dem letzten Close der Aktie. <br>
+    Kurs C entspricht dem drittletzten Close des Index <br> Kurs D entspricht dem drittletzten Close der Aktie </p>
+    <p>Weitere Textabschnitte können hier ergänzt werden.</p>
+  </div>
+  
+</body>
+</html>

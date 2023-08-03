@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Börsenanalyse</title>
+  <script>
+    function analyzeStocks() {
+      // Werte aus den Eingabefeldern auslesen
+      var kursA = parseFloat(document.getElementById("kursA").value);
+      var kursB = parseFloat(document.getElementById("kursB").value);
+      var kursC = parseFloat(document.getElementById("kursC").value);
+
+      // Börsenanalyse durchführen
+      var diffAB = Math.abs(kursA - kursB); // Absolute Differenz von A und B
+      var diffCB = Math.abs(kursC - kursB); // Absolute Differenz von C und B
+
+      // Ergebnis anzeigen
+      var result;
+      if (diffAB < diffCB) {
+        result = "GO";
+      } else {
+        result = "NO";
+      }
+      document.getElementById("result").innerHTML = result;
+
+      // Textfelder zurücksetzen
+      document.getElementById("kursA").value = "";
+      document.getElementById("kursB").value = "";
+      document.getElementById("kursC").value = "";
+    }
+  </script>
+</head>
+<body>
+    <h1>TEMPO</h1><p>Kurs A = letzter Close / Kurs B = vorletzter Close / Kurs C = drittletzter Close</p>
+    <body>
+      <label for="aktienname">Aktienname:</label>
+      <input type="text" id="aktienname" name="aktienname">
+  </body><br>
+
+  <label for="kursA">Kurs A:</label>
+  <input type="text" id="kursA"><br>
+
+  <label for="kursB">Kurs B:</label>
+  <input type="text" id="kursB"><br>
+
+  <label for="kursC">Kurs C:</label>
+  <input type="text" id="kursC"><br>
+
+  <button onclick="analyzeStocks()">Analyse durchführen</button>
+
+  <p>Ergebnis: <span id="result"></span></p>
+</body>
+</html>

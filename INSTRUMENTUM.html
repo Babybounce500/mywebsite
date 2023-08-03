@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Positionsgröße von Aktien</title>
+  <script>
+    function calculatePositionSize() {
+      // Werte aus den Eingabefeldern auslesen
+      var kontostand = parseFloat(document.getElementById("kontostand").value.replace(",", "."));
+      var kursrisiko = parseFloat(document.getElementById("kursrisiko").value.replace(",", "."));
+
+      // Positionsgröße (Stückzahl) berechnen
+      var prozentsatz = 1; // 1% des Kontostands
+      var stückzahl = (kontostand * prozentsatz / 100) / kursrisiko;
+
+      // Ergebnis anzeigen
+      document.getElementById("stückzahl").innerHTML = stückzahl;
+    }
+  </script>
+</head>
+<body>
+  <h1>Positionsgröße von Aktien</h1>
+
+  <label for="kontostand">Kontostand:</label>
+  <input type="text" id="kontostand"><br>
+
+  <label for="kursrisiko">Kursrisiko:</label>
+  <input type="text" id="kursrisiko"><br>
+
+  <button onclick="calculatePositionSize()">Berechnen</button>
+
+  <p>Positionsgröße (Stückzahl): <span id="stückzahl"></span></p>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stopp-Bestimmung beim Aktienhandel</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function determineStops() {
+            var kerzentief = parseFloat(document.getElementById("kerzentief").value);
+            var kerzenhoch = parseFloat(document.getElementById("kerzenhoch").value);
+            
+            var longStop = kerzentief;
+            var shortStop = kerzenhoch;
+            
+            document.getElementById("longStop").textContent = longStop.toFixed(2);
+            document.getElementById("shortStop").textContent = shortStop.toFixed(2);
+        }
+    </script>
+</head>
+<body>
+    <h1>Stopp-Bestimmung beim Aktienhandel</h1>
+    
+    <label for="kerzentief">Letztes Kerzentief:</label>
+    <input type="number" id="kerzentief" step="0.01"><br>
+    
+    <label for="kerzenhoch">Letztes Kerzenhoch:</label>
+    <input type="number" id="kerzenhoch" step="0.01"><br>
+    
+    <button onclick="determineStops()">Stopps bestimmen</button>
+    
+    <table>
+        <tr>
+            <th>Position</th>
+            <th>Anfangsstopp</th>
+        </tr>
+        <tr>
+            <td>LONG</td>
+            <td id="longStop"></td>
+        </tr>
+        <tr>
+            <td>SHORT</td>
+            <td id="shortStop"></td>
+        </tr>
+    </table>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gewinnmitnahme bei Aktien</title>
+  <script>
+    function calculateNewQuantity() {
+      // Werte aus den Eingabefeldern auslesen
+      var anfangsrisiko = parseFloat(document.getElementById("anfangsrisiko").value.replace(",", "."));
+      var aktuellerKurs = parseFloat(document.getElementById("aktuellerKurs").value.replace(",", "."));
+      var stopp = parseFloat(document.getElementById("stopp").value.replace(",", "."));
+
+      // Neue Stückzahl berechnen
+      var neueStückzahl = anfangsrisiko / (aktuellerKurs - stopp);
+
+      // Ergebnis anzeigen
+      document.getElementById("neueStückzahl").innerHTML = neueStückzahl.toFixed(2);
+    }
+  </script>
+</head>
+<body>
+  <h1>Gewinnmitnahme bei Aktien</h1>
+
+  <label for="anfangsrisiko">Anfangsrisiko (in Euro):</label>
+  <input type="text" id="anfangsrisiko"><br>
+
+  <label for="aktuellerKurs">Aktueller Kurs:</label>
+  <input type="text" id="aktuellerKurs"><br>
+
+  <label for="stopp">Stopp:</label>
+  <input type="text" id="stopp"><br>
+
+  <button onclick="calculateNewQuantity()">Berechnen</button>
+
+  <p>Neue Stückzahl: <span id="neueStückzahl"></span></p>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zeitstop-Berechnung</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function calculateTimeStop() {
+            var selectedOption = document.getElementById("kerzenAnzahl").value;
+            var timeStop = "";
+            var daysToAdd = 0;
+
+            switch (selectedOption) {
+                case "1":
+                    timeStop = "nach 1 Kerze";
+                    daysToAdd = 1;
+                    break;
+                case "3":
+                    timeStop = "nach 3 Kerzen";
+                    daysToAdd = 3;
+                    break;
+                case "5":
+                    timeStop = "nach 5 Kerzen";
+                    daysToAdd = 5;
+                    break;
+                default:
+                    timeStop = "Keine Auswahl";
+                    break;
+            }
+
+            var currentDate = new Date();
+            currentDate.setDate(currentDate.getDate() + daysToAdd);
+            var formattedDate = currentDate.toDateString();
+            
+            document.getElementById("timeStop").textContent = timeStop;
+            document.getElementById("date").textContent = formattedDate;
+        }
+    </script>
+
